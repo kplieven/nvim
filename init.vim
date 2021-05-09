@@ -2,11 +2,15 @@
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
 set nu
 set rnu
+set tabstop=4
+set shiftwidth=4
 
 " coc config
 let g:coc_global_extensions = [
