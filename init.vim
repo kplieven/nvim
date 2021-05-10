@@ -3,11 +3,15 @@
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 call plug#end()
 
 set nu
 set rnu
+set tabstop=4
+set shiftwidth=4
 
 " avoid outrageously large tabs
 filetype plugin indent on
