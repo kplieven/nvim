@@ -6,7 +6,11 @@ Plug 'tpope/vim-surround'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
+Plug 'joshdick/onedark.vim'
+
 call plug#end()
+
+colorscheme onedark
 
 set nu
 set rnu
