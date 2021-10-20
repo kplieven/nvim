@@ -38,8 +38,17 @@ call plug#begin('~/.config/nvim/plugs')
 	Plug 'tpope/vim-surround'
 	Plug 'vim-syntastic/syntastic'
 
+    " Smooth scrolling
+    Plug 'psliwka/vim-smoothie'
+
+    " Startup screen
+    Plug 'mhinz/vim-startify'
+
 	" Python
     Plug 'google/yapf'
+
+    " Markdown
+    Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 
 " End of pluginlist
 call plug#end()
@@ -262,3 +271,12 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" add english words to completion
+set dictionary+=/usr/share/dict/american-english
+set dictionary+=~/repositories/wordlists-master/english-all.txt
+set dictionary+=~/repositories/wordlists-master/ukenglish.txt
+" add Dutch words to completion
+set dictionary+=~/repositories/wordlists-master/nederlands.txt
+
+" let g:mkdp_markdown_css = expand('~/.config/nvim/plugs/markdown-preview.nvim/css_files/retro.css')
