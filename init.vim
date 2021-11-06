@@ -7,6 +7,7 @@ call plug#begin('~/.config/nvim/plugs')
     " Themes
     Plug 'projekt0n/github-nvim-theme'
     Plug 'joshdick/onedark.vim'
+    Plug 'katawful/kat.vim'
 
 	" Git highlighting
 	Plug 'airblade/vim-gitgutter'
@@ -60,7 +61,8 @@ call plug#end()
 set nu
 set rnu
 
-colorscheme onedark
+colorscheme github_dark
+let g:airline_theme='onedark'
 
 " Link the system and vim clipboard
 set clipboard=unnamedplus
