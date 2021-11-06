@@ -41,6 +41,10 @@ call plug#begin('~/.config/nvim/plugs')
     " Smooth scrolling
     Plug 'psliwka/vim-smoothie'
 
+    " Better tabline
+    Plug 'kyazdani42/nvim-web-devicons'
+    Plug 'romgrk/barbar.nvim'
+
     " Startup screen
     Plug 'mhinz/vim-startify'
 
@@ -280,3 +284,6 @@ set dictionary+=~/repositories/wordlists-master/ukenglish.txt
 set dictionary+=~/repositories/wordlists-master/nederlands.txt
 
 " let g:mkdp_markdown_css = expand('~/.config/nvim/plugs/markdown-preview.nvim/css_files/retro.css')
+
+" enable folding based on syntax
+set foldmethod=syntax
