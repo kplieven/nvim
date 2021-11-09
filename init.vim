@@ -28,6 +28,7 @@ call plug#begin('~/.config/nvim/plugs')
 
 	" Auto pair things like quotes and paratheses
 	Plug 'jiangmiao/auto-pairs'
+
     " Easy commenting
 	Plug 'tomtom/tcomment_vim'
 
@@ -48,6 +49,9 @@ call plug#begin('~/.config/nvim/plugs')
 
     " Startup screen
     Plug 'mhinz/vim-startify'
+
+    " Searching project for occurrences
+    Plug 'mileszs/ack.vim'
 
 	" Python
     Plug 'google/yapf'
@@ -289,3 +293,6 @@ set dictionary+=~/repositories/wordlists-master/nederlands.txt
 
 " enable folding based on syntax
 set foldmethod=syntax
+
+" Finding occurrences in files
+let g:ackprg = 'ag --nogroup --nocolor --column'
