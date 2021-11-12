@@ -96,10 +96,15 @@ set clipboard=unnamedplus
 
 command! -range -nargs=* Reloadsettings source ~/.vimrc
 
-map L :tabnext<CR>
-map H :tabprev<CR>
+" Standard tab navigation
+" map L :tabnext<CR>
+" map H :tabprev<CR>
+nnoremap <silent> L :BufferNext<CR>
+nnoremap <silent> H :BufferPrevious<CR>
+
+" Tab management
 map <C-t> :tabnew<CR>
-" map <C-w> :tabclose<CR>
+map <C-w> :tabclose<CR>
 
 set ignorecase
 set smartcase
@@ -185,14 +190,7 @@ set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-if has("nvim-0.5.0") || has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
