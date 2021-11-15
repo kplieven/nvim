@@ -42,8 +42,9 @@ call plug#begin('~/.config/nvim/plugs')
     " Easy commenting
 	Plug 'tomtom/tcomment_vim'
 
-    " Nerdtree
-    Plug 'preservim/nerdtree'
+    " File explorer
+    Plug 'kyazdani42/nvim-web-devicons' " for file icons
+    Plug 'kyazdani42/nvim-tree.lua'
 
     " Change surrounding characters easily
 	Plug 'tpope/vim-surround'
@@ -82,6 +83,7 @@ set clipboard=unnamedplus
 " nvim-cmp completion setup
 set completeopt=menu,menuone,noselect
 
+" Lua configs
 lua <<EOF
   -- Setup nvim-cmp.
   local cmp = require'cmp'
@@ -160,7 +162,7 @@ lua <<EOF
     buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
-end
+  end
 
   -- Use a loop to conveniently call 'setup' on multiple servers and
   -- map buffer local keybindings when the language server attaches
@@ -180,26 +182,60 @@ end
       format = lspkind.cmp_format({with_text = false, maxwidth = 50})
     }
   }
+
+  -- following options are the default
+  -- each of these are documented in `:help nvim-tree.OPTION_NAME`
+  require'nvim-tree'.setup {
+    disable_netrw       = true,
+    hijack_netrw        = true,
+    open_on_setup       = false,
+    ignore_ft_on_setup  = {},
+    auto_close          = false,
+    open_on_tab         = false,
+    hijack_cursor       = false,
+    update_cwd          = false,
+    update_to_buf_dir   = {
+      enable = true,
+      auto_open = true,
+    },
+    diagnostics = {
+      enable = false,
+      icons = {
+        hint = "",
+        info = "",
+        warning = "",
+        error = "",
+      }
+    },
+    update_focused_file = {
+      enable      = false,
+      update_cwd  = false,
+      ignore_list = {}
+    },
+    system_open = {
+      cmd  = nil,
+      args = {}
+    },
+    filters = {
+      dotfiles = false,
+      custom = {}
+    },
+    view = {
+      width = 30,
+      height = 30,
+      hide_root_folder = false,
+      side = 'left',
+      auto_resize = false,
+      mappings = {
+        custom_only = false,
+        list = {}
+      }
+    }
+  }
 EOF
 
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" MULTIPURPOSE TAB KEY
-" Indent if we're at the beginning of a line. Else, do completion.
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-	" function! InsertTabWrapper()
-	"     let col = col('.') - 1
-	"     if !col || getline('.')[col - 1] !~ '\k'
-	"         return "\<tab>"
-	"     else
-	"         return "\<c-n>"
-	"     endif
-	" endfunction
-	" inoremap <expr> <tab> InsertTabWrapper()
-	" inoremap <s-tab> <c-n>
-
 " Highligh trailing whitespace
-	highlight ExtraWhitespace ctermbg=red guibg=red
+	highlight ExtraWhitespace ctermbg=red guibg=#e74c3c
 	match ExtraWhitespace /\s\+$/
 	autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 	autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
@@ -226,8 +262,8 @@ set sts=4 sw=4
 set expandtab
 
 " resize splits quickly
-nnoremap <silent> <Leader>= :exe "vertical resize " . (winwidth(0) * 3/2)<CR>
-nnoremap <silent> <Leader>- :exe "vertical resize " . (winwidth(0) * 2/3)<CR>
+nnoremap <silent> <Leader>= :exe "vertical resize " . (winwidth(0) * 10/7)<CR>
+nnoremap <silent> <Leader>- :exe "vertical resize " . (winwidth(0) * 7/10)<CR>
 
 let g:indentLine_enabled = 1
 let g:indentLine_color_term = 74
@@ -238,12 +274,15 @@ let g:airline#extensions#tabline#formatter = 'default'
 
 map <F2> :echo 'Current date is ' . strftime('%H:%M:%S %a %d/%m/%y')<CR>
 
-" Toggle NERDTree
-nnoremap <C-q> :NERDTreeToggle<CR>
+" NvimTree configs
+nnoremap <C-q> :NvimTreeToggle<CR>
+nnoremap <leader>r :NvimTreeRefresh<CR>
+nnoremap <leader>n :NvimTreeFindFile<CR>
 
-" Exit Vim if NERDTree is the only window left.
-autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTree') && b:NERDTree.isTabTree() |
-    \ quit | endif
+set termguicolors " this variable must be enabled for colors to be applied properly
+
+" a list of groups can be found at `:help nvim_tree_highlight`
+" highlight NvimTreeFolderIcon guibg=blue
 
 " Give more space for displaying messages.
 set cmdheight=2
