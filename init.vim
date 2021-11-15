@@ -16,6 +16,7 @@ call plug#begin('~/.config/nvim/plugs')
     Plug 'hrsh7th/cmp-path'
     Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/nvim-cmp'
+    Plug 'onsails/lspkind-nvim'
 
     " Snippets
     Plug 'hrsh7th/cmp-vsnip'
@@ -72,7 +73,7 @@ call plug#end()
 set nu
 set rnu
 
-colorscheme github_dark
+colorscheme onedark
 let g:airline_theme='onedark'
 
 " Link the system and vim clipboard
@@ -101,6 +102,7 @@ lua <<EOF
         c = cmp.mapping.close(),
       }),
       ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ['<Tab>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 's' }),
     },
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
@@ -150,7 +152,7 @@ lua <<EOF
     buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
     buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
     buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-    buf_set_keymap('n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+    buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
     buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
@@ -162,7 +164,7 @@ end
 
   -- Use a loop to conveniently call 'setup' on multiple servers and
   -- map buffer local keybindings when the language server attaches
-  local servers = { 'clangd' }
+  local servers = { 'ccls', 'pyright' }
   for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
       on_attach = on_attach,
@@ -171,7 +173,15 @@ end
       }
     }
   end
+
+  local lspkind = require('lspkind')
+  cmp.setup {
+    formatting = {
+      format = lspkind.cmp_format({with_text = false, maxwidth = 50})
+    }
+  }
 EOF
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " MULTIPURPOSE TAB KEY
@@ -287,6 +297,8 @@ set dictionary+=~/repositories/wordlists-master/nederlands.txt
 
 " enable folding based on syntax
 set foldmethod=syntax
+" but open all folds when opening a buffer
+autocmd BufWinEnter * silent! :%foldopen!
 
 " Finding occurrences in files
 let g:ackprg = 'ag --nogroup --nocolor --column'
