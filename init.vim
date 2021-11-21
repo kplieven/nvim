@@ -17,6 +17,7 @@ call plug#begin('~/.config/nvim/plugs')
     Plug 'hrsh7th/cmp-cmdline'
     Plug 'hrsh7th/nvim-cmp'
     Plug 'onsails/lspkind-nvim'
+    Plug 'RRethy/vim-illuminate'
 
     " Snippets
     Plug 'hrsh7th/cmp-vsnip'
@@ -32,7 +33,7 @@ call plug#begin('~/.config/nvim/plugs')
 	Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
 
-	" completions
+	" Fuzzy file finder
     Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 	Plug 'junegunn/fzf.vim'
 
@@ -41,6 +42,10 @@ call plug#begin('~/.config/nvim/plugs')
 
     " Easy commenting
 	Plug 'tomtom/tcomment_vim'
+
+    " Adding tags to comments
+    Plug 'nvim-lua/plenary.nvim'
+    Plug 'folke/todo-comments.nvim'
 
     " File explorer
     Plug 'kyazdani42/nvim-web-devicons' " for file icons
@@ -161,7 +166,7 @@ lua <<EOF
     buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
     buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    buf_set_keymap('n', '<leader>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
   end
 
   -- Use a loop to conveniently call 'setup' on multiple servers and
@@ -232,15 +237,22 @@ lua <<EOF
       }
     }
   }
+
+  require("todo-comments").setup{
+    keywords = {
+        QUESTION = { icon = "? ", color = "hint", alt = { "ASK" }  }
+    },
+    merge_keywords = true
+  }
 EOF
 
-" Highligh trailing whitespace
-	highlight ExtraWhitespace ctermbg=red guibg=#e74c3c
-	match ExtraWhitespace /\s\+$/
-	autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-	autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-	autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-	autocmd BufWinLeave * call clearmatches()
+" Highlight trailing whitespace
+highlight ExtraWhitespace ctermbg=red guibg=#e74c3c
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
 
 command! -range -nargs=* Reloadsettings source ~/.vimrc
 
@@ -252,7 +264,7 @@ nnoremap <silent> H :BufferPrevious<CR>
 
 " Tab management
 map <C-t> :tabnew<CR>
-map <C-w> :tabclose<CR>
+" map <C-w> :tabclose<CR> " this one's useless, nothing wrong with :wq
 
 set ignorecase
 set smartcase
@@ -262,8 +274,8 @@ set sts=4 sw=4
 set expandtab
 
 " resize splits quickly
-nnoremap <silent> <Leader>= :exe "vertical resize " . (winwidth(0) * 10/7)<CR>
-nnoremap <silent> <Leader>- :exe "vertical resize " . (winwidth(0) * 7/10)<CR>
+nnoremap <silent> <Leader>= :exe "vertical resize " . (winwidth(0) * 10/9)<CR>
+nnoremap <silent> <Leader>- :exe "vertical resize " . (winwidth(0) * 9/10)<CR>
 
 let g:indentLine_enabled = 1
 let g:indentLine_color_term = 74
@@ -320,9 +332,6 @@ noremap <C-p> :ProjectFiles<CR>
 command! -bang -nargs=? -complete=dir Files
             \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
-" Format code shortcut
-" nnoremap <leader>f :FormatCode<CR>
-
 set signcolumn=yes
 
 " add english words to completion
@@ -341,3 +350,6 @@ autocmd BufWinEnter * silent! :%foldopen!
 
 " Finding occurrences in files
 let g:ackprg = 'ag --nogroup --nocolor --column'
+
+" Todo quick fix shortcut
+noremap <leader>t :TodoQuickFix<CR>
