@@ -59,7 +59,6 @@ call plug#begin('~/.config/nvim/plugs')
 
     " Better tabline
     Plug 'kyazdani42/nvim-web-devicons'
-    Plug 'romgrk/barbar.nvim'
 
     " Startup screen
     Plug 'mhinz/vim-startify'
@@ -257,10 +256,10 @@ autocmd BufWinLeave * call clearmatches()
 command! -range -nargs=* Reloadsettings source ~/.vimrc
 
 " Standard tab navigation
-" map L :tabnext<CR>
-" map H :tabprev<CR>
-nnoremap <silent> L :BufferNext<CR>
-nnoremap <silent> H :BufferPrevious<CR>
+map L :tabnext<CR>
+map H :tabprev<CR>
+" nnoremap <silent> L :BufferNext<CR>
+" nnoremap <silent> H :BufferPrevious<CR>
 
 " Tab management
 map <C-t> :tabnew<CR>
