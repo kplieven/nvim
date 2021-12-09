@@ -82,7 +82,7 @@ colorscheme onedark
 let g:airline_theme='onedark'
 
 " Link the system and vim clipboard
-set clipboard=unnamedplus
+set clipboard+=unnamedplus
 
 " nvim-cmp completion setup
 set completeopt=menu,menuone,noselect
