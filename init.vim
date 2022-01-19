@@ -8,6 +8,7 @@ call plug#begin('~/.config/nvim/plugs')
     Plug 'projekt0n/github-nvim-theme'
     Plug 'joshdick/onedark.vim'
     Plug 'katawful/kat.vim'
+    Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 
     " Builtin LSP support and autocompletion
     Plug 'neovim/nvim-lspconfig'
@@ -18,6 +19,9 @@ call plug#begin('~/.config/nvim/plugs')
     Plug 'hrsh7th/nvim-cmp'
     Plug 'onsails/lspkind-nvim'
     Plug 'RRethy/vim-illuminate'
+
+    " Clang format
+    Plug 'rhysd/vim-clang-format'
 
     " Snippets
     Plug 'hrsh7th/cmp-vsnip'
@@ -82,7 +86,9 @@ call plug#end()
 set nu
 set rnu
 
-colorscheme onedark
+" Transparent background
+" au ColorScheme * hi Normal ctermbg=none guibg=none
+colorscheme catppuccin
 let g:airline_theme='onedark'
 
 " Link the system and vim clipboard
@@ -174,7 +180,7 @@ lua <<EOF
 
   -- Use a loop to conveniently call 'setup' on multiple servers and
   -- map buffer local keybindings when the language server attaches
-  local servers = { 'clangd', 'pyright' }
+  local servers = { 'ccls', 'pyright' }
   for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {
       on_attach = on_attach,
@@ -248,6 +254,18 @@ lua <<EOF
     merge_keywords = true
   }
 
+  -- catppucin colorscheme
+  local catppuccin = require("catppuccin")
+  catppuccin.setup{
+    transparent_background = true,
+    integrations = {
+        nvimtree = {
+                enabled = true,
+                show_root = true
+            }
+        }
+  }
+
   -- floating input for commands
   -- vim.api.nvim_set_keymap('n', ':', '<cmd>FineCmdline<CR>', {noremap = true})
 EOF
@@ -315,7 +333,7 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" use lualatex as default engine instead of pdflatex
+" use xelatex as default engine instead of pdflatex
 let g:vimtex_compiler_latexmk_engines = {
     \ '_'                : '-xelatex',
     \ 'pdflatex'         : '-pdf',
@@ -362,3 +380,4 @@ noremap <leader>t :TodoQuickFix<CR>
 
 " Toggle folds with space
 nnoremap <Space> za
+
