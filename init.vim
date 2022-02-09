@@ -249,7 +249,8 @@ lua <<EOF
 
   require("todo-comments").setup{
     keywords = {
-        QUESTION = { icon = "? ", color = "hint", alt = { "ASK" }  }
+        QUESTION = { icon = "? ", color = "hint", alt = { "ASK" }  },
+        CONTENT = { icon = "☲ ", color = "hint", alt = { "EXPLAIN" } }
     },
     merge_keywords = true
   }
